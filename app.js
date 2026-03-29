@@ -9,10 +9,10 @@ let state = {
     isAdmin: false,
     currentPlan: null,
     plans: { vless: {}, mtproto: {} }
-};
+}
 
 // API Base URL
-const API_URL = 'http://109.120.187.94/api'; // Твой бэкенд на сервере
+const API_URL = 'https://osmometric-wyatt-intertissued.ngrok-free.dev/api'; // Твой бэкенд на сервере
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', async () => {
