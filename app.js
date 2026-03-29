@@ -26,11 +26,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Аутентификация
-        const authResponse = await fetch(`${API_URL}/auth`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ initData })
-        });
+const authResponse = await fetch(`${API_URL}/auth`, {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true' // ДОБАВЛЕНО
+    },
+    body: JSON.stringify({ initData })
+});
 
         if (!authResponse.ok) {
             showError('Ошибка аутентификации');
