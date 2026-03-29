@@ -12,7 +12,7 @@ let state = {
 };
 
 // API Base URL
-const API_URL = '/api';
+const API_URL = 'http://109.120.187.94/api';
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', async () => {
