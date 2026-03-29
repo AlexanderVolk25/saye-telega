@@ -12,7 +12,7 @@ let state = {
 }
 
 // API Base URL
-const API_URL = 'https://osmometric-wyatt-intertissued.ngrok-free.dev/api'; // Твой бэкенд на сервере
+const API_URL = 'https://goldmine.myarena.site/api'; // Твой бэкенд на сервере
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', async () => {
