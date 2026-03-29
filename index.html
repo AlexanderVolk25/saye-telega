@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neira VPN Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: var(--tg-theme-hint-color, #999);
+            font-size: 14px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            color: var(--tg-theme-text-color, #000);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            background: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #fff);
+        }
+        
+        .content {
+            display: none;
+        }
+        
+        .content.active {
+            display: block;
+        }
+        
+        .plan-card {
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .plan-card:active {
+            transform: scale(0.98);
+        }
+        
+        .plan-card.selected {
+            background: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #fff);
+        }
+        
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .plan-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .plan-price {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .plan-details {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+        
+        .buy-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            background: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #fff);
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .buy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .my-proxies {
+            margin-bottom: 16px;
+        }
+        
+        .proxy-item {
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .proxy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .proxy-type {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .proxy-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: #4ade80;
+            color: white;
+        }
+        
+        .proxy-status.pending {
+            background: #fbbf24;
+        }
+        
+        .proxy-link {
+            background: rgba(0,0,0,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            word-break: break-all;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .copy-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #fff);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .admin-panel {
+            padding: 16px;
+        }
+        
+        .stat-card {
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .admin-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            color: var(--tg-theme-text-color, #000);
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top-color: var(--tg-theme-button-color, #3390ec);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.6;
+        }
+        
+        .instruction {
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .instruction h4 {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .instruction ol {
+            margin-left: 20px;
+        }
+        
+        .instruction li {
+            margin-bottom: 4px;
+        }
+
+        .receipt-upload {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            border-radius: 12px;
+        }
+
+        .receipt-upload h4 {
+            margin-bottom: 12px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-input-btn {
+            width: 100%;
+            padding: 14px;
+            border: 2px dashed var(--tg-theme-button-color, #3390ec);
+            background: transparent;
+            color: var(--tg-theme-text-color, #000);
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .send-receipt-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            background: #4ade80;
+            color: white;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔥 Neira VPN</h1>
+        <p>Хельсинки, Финляндия • 1 Гбит/с</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" data-tab="shop">🛒 Магазин</button>
+        <button class="tab" data-tab="my-proxies">📱 Мои прокси</button>
+        <button class="tab admin-tab" data-tab="admin" style="display:none;">👑 Админ</button>
+    </div>
+
+    <div id="shop" class="content active">
+        <h3 style="margin-bottom: 16px;">Выберите тип прокси:</h3>
+        
+        <div class="plan-card" data-type="vless" data-plan="day">
+            <div class="plan-header">
+                <div class="plan-name">🚀 Vless - 1 день</div>
+                <div class="plan-price">50₽</div>
+            </div>
+            <div class="plan-details">⚡ Высокая скорость • Для VPN приложений</div>
+        </div>
+
+        <div class="plan-card" data-type="vless" data-plan="month">
+            <div class="plan-header">
+                <div class="plan-name">🚀 Vless - 30 дней</div>
+                <div class="plan-price">300₽</div>
+            </div>
+            <div class="plan-details">⚡ Высокая скорость • Для VPN приложений</div>
+        </div>
+
+        <div class="plan-card" data-type="vless" data-plan="quarter">
+            <div class="plan-header">
+                <div class="plan-name">🚀 Vless - 3 месяца</div>
+                <div class="plan-price">800₽</div>
+            </div>
+            <div class="plan-details">⚡ Высокая скорость • Для VPN приложений • ВЫГОДНО</div>
+        </div>
+
+        <div class="plan-card" data-type="vless" data-plan="year">
+            <div class="plan-header">
+                <div class="plan-name">🚀 Vless - 1 год</div>
+                <div class="plan-price">1000₽</div>
+            </div>
+            <div class="plan-details">⚡ Высокая скорость • Для VPN приложений • ХИТ</div>
+        </div>
+
+        <div class="plan-card" data-type="mtproto" data-plan="mt_day">
+            <div class="plan-header">
+                <div class="plan-name">📡 MTProto - 1 день</div>
+                <div class="plan-price">50₽</div>
+            </div>
+            <div class="plan-details">🔒 Для Telegram • Встроенная поддержка</div>
+        </div>
+
+        <div class="plan-card" data-type="mtproto" data-plan="mt_week">
+            <div class="plan-header">
+                <div class="plan-name">📡 MTProto - 7 дней</div>
+                <div class="plan-price">100₽</div>
+            </div>
+            <div class="plan-details">🔒 Для Telegram • Встроенная поддержка</div>
+        </div>
+
+        <div class="plan-card" data-type="mtproto" data-plan="mt_month">
+            <div class="plan-header">
+                <div class="plan-name">📡 MTProto - 30 дней</div>
+                <div class="plan-price">300₽</div>
+            </div>
+            <div class="plan-details">🔒 Для Telegram • Встроенная поддержка</div>
+        </div>
+
+        <div class="plan-card" data-type="mtproto" data-plan="mt_year">
+            <div class="plan-header">
+                <div class="plan-name">📡 MTProto - 1 год</div>
+                <div class="plan-price">1000₽</div>
+            </div>
+            <div class="plan-details">🔒 Для Telegram • Встроенная поддержка • ХИТ</div>
+        </div>
+
+        <button class="buy-btn" id="buyBtn" disabled>Выберите тариф</button>
+
+        <div id="receiptUpload" style="display:none;">
+            <div class="receipt-upload">
+                <h4>📸 Загрузите чек об оплате</h4>
+                <p style="font-size: 13px; opacity: 0.7; margin-bottom: 12px;">Отправьте скриншот или фото чека</p>
+                <div class="file-input-wrapper">
+                    <button class="file-input-btn" id="fileBtn">📎 Выбрать файл</button>
+                    <input type="file" id="receiptFile" accept="image/*" capture="environment">
+                </div>
+                <img id="previewImg" class="preview-img" style="display:none;">
+                <button class="send-receipt-btn" id="sendReceiptBtn" style="display:none;">✅ Отправить чек</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="my-proxies" class="content">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Загрузка...</p>
+        </div>
+    </div>
+
+    <div id="admin" class="content">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Загрузка...</p>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+
+        let selectedType = null;
+        let selectedPlan = null;
+        let selectedPrice = 0;
+        let receiptFile = null;
+
+        const userId = tg.initDataUnsafe?.user?.id || 0;
+        const username = tg.initDataUnsafe?.user?.username || 'user';
+        const isAdmin = userId === 5187783134;
+
+        // Показать админ-таб если админ
+        if (isAdmin) {
+            document.querySelector('.admin-tab').style.display = 'block';
+        }
+
+        // Табы
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+                
+                if (tabName === 'my-proxies') {
+                    loadMyProxies();
+                } else if (tabName === 'admin' && isAdmin) {
+                    loadAdminPanel();
+                }
+            });
+        });
+
+        // Выбор тарифа
+        document.querySelectorAll('.plan-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                
+                selectedType = card.dataset.type;
+                selectedPlan = card.dataset.plan;
+                selectedPrice = parseInt(card.querySelector('.plan-price').textContent);
+                
+                document.getElementById('buyBtn').disabled = false;
+                document.getElementById('buyBtn').textContent = `Купить за ${selectedPrice}₽`;
+            });
+        });
+
+        // Кнопка покупки
+        document.getElementById('buyBtn').addEventListener('click', () => {
+            if (!selectedType || !selectedPlan) return;
+            
+            document.getElementById('receiptUpload').style.display = 'block';
+            document.getElementById('buyBtn').textContent = '⬇️ Загрузите чек ниже';
+            document.getElementById('buyBtn').disabled = true;
+            
+            // Прокрутка к форме загрузки
+            setTimeout(() => {
+                document.getElementById('receiptUpload').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        });
+
+        // Загрузка файла
+        document.getElementById('receiptFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                receiptFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('previewImg');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    document.getElementById('sendReceiptBtn').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('fileBtn').addEventListener('click', () => {
+            document.getElementById('receiptFile').click();
+        });
+
+        // Отправка чека через Telegram Bot
+        document.getElementById('sendReceiptBtn').addEventListener('click', async () => {
+            if (!receiptFile) return;
+            
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64Data = e.target.result.split(',')[1];
+                
+                // Отправляем данные боту через Telegram WebApp
+                tg.sendData(JSON.stringify({
+                    action: 'buy_proxy_with_receipt',
+                    user_id: userId,
+                    username: username,
+                    type: selectedType,
+                    plan: selectedPlan,
+                    price: selectedPrice,
+                    receipt_base64: base64Data
+                }));
+                
+                tg.close();
+            };
+            reader.readAsDataURL(receiptFile);
+        });
+
+        // Загрузка моих прокси
+        async function loadMyProxies() {
+            const container = document.getElementById('my-proxies');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Загрузка...</p></div>';
+            
+            // Получаем данные от бота через sendData
+            tg.sendData(JSON.stringify({
+                action: 'get_my_proxy',
+                user_id: userId
+            }));
+            
+            // Закрываем после отправки запроса (бот ответит в чат)
+            setTimeout(() => {
+                tg.close();
+            }, 500);
+        }
+
+        // Админ-панель
+        async function loadAdminPanel() {
+            const container = document.getElementById('admin');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Загрузка...</p></div>';
+            
+            if (!isAdmin) {
+                container.innerHTML = `<div class="empty-state"><h3>⛔ Доступ запрещён</h3></div>`;
+                return;
+            }
+            
+            // Отправляем запрос боту
+            tg.sendData(JSON.stringify({
+                action: 'admin_stats',
+                user_id: userId
+            }));
+            
+            setTimeout(() => {
+                tg.close();
+            }, 500);
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+                tg.showAlert('✅ Скопировано в буфер обмена!');
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                tg.showAlert('✅ Скопировано в буфер обмена!');
+            }
+        }
+
+        function copyCommand(cmd) {
+            copyToClipboard(cmd);
+        }
+    </script>
+</body>
+</html>
