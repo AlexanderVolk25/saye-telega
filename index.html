@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neira VPN Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Загрузка -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Загрузка...</p>
+        </div>
+
+        <!-- Главное меню -->
+        <div id="main-menu" class="screen hidden">
+            <div class="header">
+                <h1>🔥 Neira VPN Shop</h1>
+                <p class="subtitle">Быстрые и надежные прокси</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-item">
+                    <span class="icon">🚀</span>
+                    <div>
+                        <strong>Vless прокси</strong>
+                        <p>Для любых приложений</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="icon">📡</span>
+                    <div>
+                        <strong>MTProto прокси</strong>
+                        <p>Только для Telegram</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="icon">🌍</span>
+                    <div>
+                        <strong>Локация</strong>
+                        <p>Хельсинки, Финляндия</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="icon">⚡</span>
+                    <div>
+                        <strong>Скорость</strong>
+                        <p>1 Гбит/с</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-buttons">
+                <button class="menu-btn primary" onclick="showScreen('vless-plans')">
+                    <span class="btn-icon">🚀</span>
+                    <span class="btn-text">Vless прокси</span>
+                </button>
+                <button class="menu-btn primary" onclick="showScreen('mtproto-plans')">
+                    <span class="btn-icon">📡</span>
+                    <span class="btn-text">MTProto прокси</span>
+                </button>
+                <button class="menu-btn" onclick="showScreen('my-proxy')">
+                    <span class="btn-icon">📋</span>
+                    <span class="btn-text">Мой прокси</span>
+                </button>
+                <button class="menu-btn" onclick="pingTest()">
+                    <span class="btn-icon">🌍</span>
+                    <span class="btn-text">Тест пинга</span>
+                </button>
+                <button class="menu-btn" onclick="showScreen('help')">
+                    <span class="btn-icon">❓</span>
+                    <span class="btn-text">Помощь</span>
+                </button>
+            </div>
+
+            <div id="admin-button" class="admin-btn-container hidden">
+                <button class="menu-btn admin" onclick="showScreen('admin-panel')">
+                    <span class="btn-icon">👑</span>
+                    <span class="btn-text">Админ-панель</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Тарифы Vless -->
+        <div id="vless-plans" class="screen hidden">
+            <div class="screen-header">
+                <button class="back-btn" onclick="showScreen('main-menu')">←</button>
+                <h2>🚀 Vless прокси</h2>
+            </div>
+
+            <div class="plan-info">
+                <p><strong>Подходит для любых приложений:</strong></p>
+                <ul>
+                    <li>v2rayNG (Android)</li>
+                    <li>Nekoray (Windows/Linux)</li>
+                    <li>Shadowrocket (iOS)</li>
+                    <li>Hiddify (все платформы)</li>
+                </ul>
+                <p class="notice">⏰ Отсчёт времени начинается при первом подключении!</p>
+            </div>
+
+            <div class="plans-list" id="vless-plans-list"></div>
+        </div>
+
+        <!-- Тарифы MTProto -->
+        <div id="mtproto-plans" class="screen hidden">
+            <div class="screen-header">
+                <button class="back-btn" onclick="showScreen('main-menu')">←</button>
+                <h2>📡 MTProto прокси</h2>
+            </div>
+
+            <div class="plan-info">
+                <p><strong>Только для Telegram</strong></p>
+                <p>Прямое подключение через настройки Telegram</p>
+            </div>
+
+            <div class="plans-list" id="mtproto-plans-list"></div>
+        </div>
+
+        <!-- Оплата -->
+        <div id="payment-screen" class="screen hidden">
+            <div class="screen-header">
+                <button class="back-btn" onclick="backToPlan()">←</button>
+                <h2>💳 Оплата</h2>
+            </div>
+
+            <div class="payment-info">
+                <div class="payment-card">
+                    <div class="payment-row">
+                        <span>Тип:</span>
+                        <strong id="payment-type"></strong>
+                    </div>
+                    <div class="payment-row">
+                        <span>Тариф:</span>
+                        <strong id="payment-plan"></strong>
+                    </div>
+                    <div class="payment-row total">
+                        <span>Сумма:</span>
+                        <strong id="payment-price"></strong>
+                    </div>
+                </div>
+
+                <div class="payment-instructions">
+                    <h3>📌 Реквизиты для оплаты</h3>
+                    <div class="payment-link">
+                        <p>🔗 Т-Банк / СБП:</p>
+                        <a href="https://www.tinkoff.ru/rm/r_CUcxesUKoq.iMXRCrkRuz/5hK8221934" target="_blank" class="payment-url">
+                            Перейти к оплате
+                        </a>
+                    </div>
+
+                    <div class="instructions-list">
+                        <h4>Инструкция:</h4>
+                        <ol>
+                            <li>Переведите сумму по ссылке</li>
+                            <li>Сделайте скриншот чека</li>
+                            <li>Нажмите «Отправить чек»</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <button class="btn-primary btn-full" onclick="sendReceipt()">
+                    📎 Отправить чек
+                </button>
+            </div>
+        </div>
+
+        <!-- Мой прокси -->
+        <div id="my-proxy" class="screen hidden">
+            <div class="screen-header">
+                <button class="back-btn" onclick="showScreen('main-menu')">←</button>
+                <h2>📋 Мой прокси</h2>
+            </div>
+
+            <div id="proxy-content"></div>
+        </div>
+
+        <!-- Помощь -->
+        <div id="help" class="screen hidden">
+            <div class="screen-header">
+                <button class="back-btn" onclick="showScreen('main-menu')">←</button>
+                <h2>❓ Помощь</h2>
+            </div>
+
+            <div class="help-content">
+                <div class="help-section">
+                    <h3>🚀 Vless прокси</h3>
+                    <p>Подходит для любых приложений. Отсчёт времени начинается при первом подключении.</p>
+                    <h4>Как подключить:</h4>
+                    <ol>
+                        <li>Скопируйте Vless ссылку</li>
+                        <li>Откройте приложение (v2rayNG, Nekoray, Shadowrocket)</li>
+                        <li>Нажмите «Импорт из буфера»</li>
+                        <li>Включите подключение</li>
+                    </ol>
+                </div>
+
+                <div class="help-section">
+                    <h3>📡 MTProto прокси</h3>
+                    <p>Только для Telegram.</p>
+                    <h4>Как подключить:</h4>
+                    <ol>
+                        <li>Скопируйте MTProto ссылку</li>
+                        <li>Telegram → Настройки → Прокси</li>
+                        <li>Добавить прокси → Вставить ссылку</li>
+                        <li>Сохранить</li>
+                    </ol>
+                </div>
+
+                <div class="help-section">
+                    <h3>❓ Частые вопросы</h3>
+                    <div class="faq-item">
+                        <strong>Сколько длится подключение?</strong>
+                        <p>Прокси работает без перерывов до окончания срока.</p>
+                    </div>
+                    <div class="faq-item">
+                        <strong>Можно ли продлить?</strong>
+                        <p>Да, выберите новый тариф в главном меню.</p>
+                    </div>
+                    <div class="faq-item">
+                        <strong>Что делать, если прокси не работает?</strong>
+                        <p>Напишите в поддержку — мы решим проблему.</p>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <h3>📞 Поддержка</h3>
+                    <p>По всем вопросам пишите:</p>
+                    <a href="https://t.me/M228MP" target="_blank" class="support-link">@M228MP</a>
+                    <p class="notice">⏰ Время ответа: обычно 5-15 минут</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Админ-панель -->
+        <div id="admin-panel" class="screen hidden">
+            <div class="screen-header">
+                <button class="back-btn" onclick="showScreen('main-menu')">←</button>
+                <h2>👑 Админ-панель</h2>
+            </div>
+
+            <div class="admin-content">
+                <div class="admin-stats" id="admin-stats-content"></div>
+
+                <div class="menu-buttons">
+                    <button class="menu-btn" onclick="showScreen('admin-pending')">
+                        <span class="btn-icon">📋</span>
+                        <span class="btn-text">Заявки</span>
+                    </button>
+                    <button class="menu-btn" onclick="showAdminUsers()">
+                        <span class="btn-icon">👥</span>
+                        <span class="btn-text">Пользователи</span>
+                    </button>
+                    <button class="menu-btn" onclick="showSystemStats()">
+                        <span class="btn-icon">📈</span>
+                        <span class="btn-text">Система</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Заявки админа -->
+        <div id="admin-pending" class="screen hidden">
+            <div class="screen-header">
+                <button class="back-btn" onclick="showScreen('admin-panel')">←</button>
+                <h2>📋 Заявки</h2>
+            </div>
+
+            <div id="pending-list"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
