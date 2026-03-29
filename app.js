@@ -46,6 +46,7 @@ const authResponse = await fetch(`${API_URL}/auth`, {
 
         // Загружаем тарифы
         const plansResponse = await fetch(`${API_URL}/plans`);
+        headers: { 'ngrok-skip-browser-warning': 'true' }
         const plansData = await plansResponse.json();
         state.plans = plansData;
 
