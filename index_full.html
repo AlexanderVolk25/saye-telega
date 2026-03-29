@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>Neira VPN</title>
+    <link rel="preconnect" href="https://telegram.org">
+    <script src="https://telegram.org/js/telegram-web-app.js" async></script>
+    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--tg-theme-bg-color,#0a0a0a);color:var(--tg-theme-text-color,#fff);padding:16px;padding-bottom:80px;min-height:100vh}.container{max-width:600px;margin:0 auto}.header{text-align:center;margin-bottom:24px;padding:20px;background:linear-gradient(135deg,#1a1a1a 0%,#2a2a2a 100%);border-radius:16px;border:1px solid rgba(255,215,0,.2)}.header h1{font-size:28px;margin-bottom:8px;background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.header p{font-size:14px;color:#888;margin-bottom:12px}.server-info{display:flex;justify-content:space-around;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,215,0,.1)}.server-info div{text-align:center}.server-info span{display:block;font-size:12px;color:#666;margin-bottom:4px}.server-info strong{font-size:14px;color:#FFD700}.section{margin-bottom:20px}.section-title{font-size:18px;font-weight:600;margin-bottom:12px;color:#FFD700;display:flex;align-items:center;gap:8px}.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:16px;margin-bottom:12px;transition:all .3s;cursor:pointer}.card:hover{background:rgba(255,215,0,.1);border-color:rgba(255,215,0,.4);transform:translateY(-2px)}.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.card-title{font-size:16px;font-weight:600;color:#FFD700}.card-price{font-size:18px;font-weight:700;color:#0f8}.card-description{font-size:14px;color:#aaa;line-height:1.5}.plan-card{background:linear-gradient(135deg,rgba(255,215,0,.1) 0%,rgba(255,165,0,.05) 100%);border:2px solid rgba(255,215,0,.3);border-radius:16px;padding:20px;margin-bottom:16px;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}.plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#FFD700 0%,#FFA500 100%)}.plan-card:hover{transform:translateY(-4px);border-color:rgba(255,215,0,.6);box-shadow:0 8px 24px rgba(255,215,0,.2)}.plan-card.selected{border-color:#FFD700;background:linear-gradient(135deg,rgba(255,215,0,.2) 0%,rgba(255,165,0,.1) 100%)}.plan-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.plan-name{font-size:20px;font-weight:700;color:#FFD700}.plan-price{font-size:24px;font-weight:700;color:#0f8}.plan-details{font-size:14px;color:#aaa;margin-bottom:12px}.plan-features{display:flex;flex-wrap:wrap;gap:8px}.feature-tag{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);padding:4px 12px;border-radius:20px;font-size:12px;color:#FFD700}.btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s;margin-bottom:12px}.btn-primary{background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);color:#000}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,215,0,.4)}.btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}.btn-secondary:hover{background:rgba(255,255,255,.15)}.btn:disabled{opacity:.5;cursor:not-allowed}.payment-info{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:12px;padding:16px;margin-bottom:16px}.payment-info h3{color:#FFD700;margin-bottom:12px;font-size:16px}.payment-link{background:rgba(0,0,0,.3);padding:12px;border-radius:8px;word-break:break-all;font-size:13px;margin-bottom:12px;border:1px solid rgba(255,215,0,.2)}.payment-steps{list-style:none;padding:0}.payment-steps li{padding:8px 0;padding-left:28px;position:relative;color:#aaa;font-size:14px}.payment-steps li::before{content:attr(data-step);position:absolute;left:0;background:#FFD700;color:#000;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}.proxy-info{background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.3);border-radius:12px;padding:16px;margin-bottom:16px}.proxy-link{background:rgba(0,0,0,.3);padding:12px;border-radius:8px;word-break:break-all;font-family:monospace;font-size:12px;margin:12px 0;border:1px solid rgba(0,255,136,.2);position:relative}.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,215,0,.2);border:1px solid rgba(255,215,0,.3);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;color:#FFD700}.copy-btn:hover{background:rgba(255,215,0,.3)}.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:8px}.status-active{background:rgba(0,255,136,.2);color:#0f8;border:1px solid rgba(0,255,136,.3)}.status-pending{background:rgba(255,165,0,.2);color:#FFA500;border:1px solid rgba(255,165,0,.3)}.hidden{display:none!important}.tab-buttons{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding:4px}.tab-btn{padding:10px 20px;border:1px solid rgba(255,215,0,.3);background:rgba(255,255,255,.05);border-radius:20px;color:#FFD700;font-size:14px;cursor:pointer;white-space:nowrap;transition:all .3s}.tab-btn.active{background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);color:#000;border-color:#FFD700}.loading{text-align:center;padding:40px 0;color:#888}.spinner{border:3px solid rgba(255,215,0,.1);border-top:3px solid #FFD700;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:0 auto 16px}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.alert{padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:14px}.alert-success{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);color:#0f8}.alert-error{background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.3);color:#f44}.alert-warning{background:rgba(255,165,0,.1);border:1px solid rgba(255,165,0,.3);color:#FFA500}.help-section{background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:16px;margin-bottom:12px}.help-section h3{color:#FFD700;margin-bottom:8px;font-size:16px}.help-section p{color:#aaa;font-size:14px;line-height:1.6}.help-section ul{padding-left:20px;margin-top:8px}.help-section li{color:#aaa;font-size:14px;margin-bottom:6px}.file-upload{background:rgba(255,215,0,.1);border:2px dashed rgba(255,215,0,.3);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .3s;margin-bottom:16px}.file-upload:hover{border-color:rgba(255,215,0,.6);background:rgba(255,215,0,.15)}.file-upload input{display:none}.file-upload-icon{font-size:48px;margin-bottom:12px}.file-upload-text{color:#FFD700;font-size:16px;font-weight:600;margin-bottom:8px}.file-upload-hint{color:#aaa;font-size:12px}.preview-image{max-width:100%;border-radius:8px;margin-top:12px;border:1px solid rgba(255,215,0,.3)}.ping-result{background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.3);border-radius:12px;padding:16px;margin:16px 0}.ping-value{font-size:32px;font-weight:700;color:#0f8;margin:12px 0}.ping-label{font-size:14px;color:#aaa}</style>
+</head>
+<body>
+    <div class="container">
+        <!-- Главный экран -->
+        <div id="mainScreen">
+            <div class="header">
+                <h1>🔥 Neira VPN Shop</h1>
+                <p>Быстрые и надёжные прокси-серверы</p>
+                <div class="server-info">
+                    <div><span>Локация</span><strong>🇫🇮 Хельсинки</strong></div>
+                    <div><span>Скорость</span><strong>1 Гбит/с</strong></div>
+                    <div><span>Uptime</span><strong>99.9%</strong></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">💡 Выберите тип прокси</div>
+                <div class="card" onclick="showProxyType('vless')">
+                    <div class="card-header">
+                        <div class="card-title">🚀 Vless прокси</div>
+                    </div>
+                    <div class="card-description">Для любых приложений: v2rayNG, Nekoray, Shadowrocket<br>⏰ Отсчёт при первом подключении</div>
+                </div>
+                <div class="card" onclick="showProxyType('mtproto')">
+                    <div class="card-header">
+                        <div class="card-title">📡 MTProto прокси</div>
+                    </div>
+                    <div class="card-description">Только для Telegram<br>Быстрое встроенное подключение</div>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="showMyProxy()">📋 Мой прокси</button>
+            <button class="btn btn-secondary" onclick="showPingTest()">🌍 Тест пинга</button>
+            <button class="btn btn-secondary" onclick="showHelp()">❓ Помощь</button>
+        </div>
+
+        <!-- Экран выбора тарифов -->
+        <div id="plansScreen" class="hidden">
+            <button class="btn btn-secondary" onclick="showMain()">◀️ Назад</button>
+            <div class="section">
+                <div class="section-title" id="plansTitle"></div>
+                <div id="plansContainer"></div>
+            </div>
+        </div>
+
+        <!-- Экран оплаты -->
+        <div id="paymentScreen" class="hidden">
+            <button class="btn btn-secondary" onclick="showPlans()">◀️ Назад</button>
+            <div class="section">
+                <div class="section-title">💳 Оплата</div>
+                <div class="payment-info">
+                    <h3>💰 Сумма: <span id="paymentAmount"></span> ₽</h3>
+                    <p style="color:#FFD700;margin-bottom:12px">Тариф: <span id="paymentPlan"></span></p>
+                    <h3>📌 Реквизиты для оплаты:</h3>
+                    <div class="payment-link">
+                        <a href="https://www.tinkoff.ru/rm/r_CUcxesUKoq.iMXRCrkRuz/5hK8221934" target="_blank" style="color:#FFD700;text-decoration:none">🔗 Т-Банк / СБП</a>
+                    </div>
+                    <h3>📝 Инструкция:</h3>
+                    <ul class="payment-steps">
+                        <li data-step="1">Переведите сумму по ссылке</li>
+                        <li data-step="2">Сделайте скриншот чека</li>
+                        <li data-step="3">Загрузите фото ниже</li>
+                        <li data-step="4">Администратор проверит (5-15 мин)</li>
+                        <li data-step="5">Получите прокси в «Мой прокси»</li>
+                    </ul>
+                </div>
+                
+                <div class="file-upload" onclick="document.getElementById('receiptFile').click()">
+                    <input type="file" id="receiptFile" accept="image/*" onchange="handleFileSelect(event)">
+                    <div class="file-upload-icon">📎</div>
+                    <div class="file-upload-text">Прикрепить чек</div>
+                    <div class="file-upload-hint">Нажмите для выбора фото</div>
+                </div>
+                <div id="previewContainer" class="hidden">
+                    <img id="previewImage" class="preview-image">
+                    <button class="btn btn-primary" onclick="sendReceiptWithPhoto()">✅ Отправить заявку</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран "Мой прокси" -->
+        <div id="myProxyScreen" class="hidden">
+            <button class="btn btn-secondary" onclick="showMain()">◀️ Назад</button>
+            <div class="section">
+                <div class="section-title">📋 Мои прокси</div>
+                <div id="myProxyContainer"><div class="loading"><div class="spinner"></div><p>Загрузка...</p></div></div>
+            </div>
+        </div>
+
+        <!-- Экран теста пинга -->
+        <div id="pingScreen" class="hidden">
+            <button class="btn btn-secondary" onclick="showMain()">◀️ Назад</button>
+            <div class="section">
+                <div class="section-title">🌍 Тест пинга</div>
+                <div id="pingContainer"><div class="loading"><div class="spinner"></div><p>Проверка соединения...</p></div></div>
+            </div>
+        </div>
+
+        <!-- Экран помощи -->
+        <div id="helpScreen" class="hidden">
+            <button class="btn btn-secondary" onclick="showMain()">◀️ Назад</button>
+            <div class="section">
+                <div class="section-title">❓ Помощь</div>
+                <div class="help-section">
+                    <h3>🚀 Vless прокси</h3>
+                    <p><strong>Для каких приложений:</strong></p>
+                    <ul><li>v2rayNG (Android)</li><li>Nekoray (Windows/Linux)</li><li>Shadowrocket (iOS)</li><li>Hiddify (все платформы)</li></ul>
+                    <p style="margin-top:8px"><strong>Как подключить:</strong></p>
+                    <ul><li>Скопируйте Vless ссылку</li><li>Откройте приложение</li><li>Нажмите «Импорт из буфера»</li><li>Включите подключение</li></ul>
+                </div>
+                <div class="help-section">
+                    <h3>📡 MTProto прокси</h3>
+                    <p><strong>Только для Telegram</strong></p>
+                    <p style="margin-top:8px"><strong>Как подключить:</strong></p>
+                    <ul><li>Скопируйте MTProto ссылку</li><li>Telegram → Настройки → Прокси</li><li>Добавить прокси → Вставить ссылку</li><li>Сохранить</li></ul>
+                </div>
+                <div class="help-section">
+                    <h3>❓ Частые вопросы</h3>
+                    <p><strong>Сколько длится?</strong><br>До окончания срока без перерывов</p>
+                    <p style="margin-top:8px"><strong>Можно продлить?</strong><br>Да, просто купите новый тариф</p>
+                    <p style="margin-top:8px"><strong>Когда начинается отсчёт Vless?</strong><br>При первом подключении</p>
+                </div>
+                <div class="help-section">
+                    <h3>📞 Поддержка</h3>
+                    <p>По всем вопросам:<br><strong style="color:#FFD700">✉️ @M228MP</strong></p>
+                    <p style="margin-top:8px">⏰ Ответ: 5-15 минут</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tg=window.Telegram.WebApp;tg.expand();tg.enableClosingConfirmation();
+        let currentProxyType='',selectedPlan=null,selectedPhoto=null;
+        const plans={vless:{day:{name:"1 день",price:50,days:1,port:10001},month:{name:"30 дней",price:300,days:30,port:10002},quarter:{name:"3 месяца",price:800,days:90,port:10003},year:{name:"1 год",price:1000,days:365,port:10004}},mtproto:{mt_day:{name:"1 день",price:50,days:1,port:8443},mt_week:{name:"7 дней",price:100,days:7,port:9443},mt_month:{name:"30 дней",price:300,days:30,port:10443},mt_year:{name:"1 год",price:1000,days:365,port:11443}}};
+        
+        function showMain(){hideAll();document.getElementById('mainScreen').classList.remove('hidden')}
+        function showProxyType(type){currentProxyType=type;hideAll();document.getElementById('plansScreen').classList.remove('hidden');document.getElementById('plansTitle').textContent=type==='vless'?'🚀 Vless прокси':'📡 MTProto прокси';renderPlans(type)}
+        function showPlans(){hideAll();document.getElementById('plansScreen').classList.remove('hidden')}
+        function showPayment(planId){selectedPlan={type:currentProxyType,id:planId};const plan=plans[currentProxyType][planId];hideAll();document.getElementById('paymentScreen').classList.remove('hidden');document.getElementById('paymentAmount').textContent=plan.price;document.getElementById('paymentPlan').textContent=plan.name}
+        function showMyProxy(){hideAll();document.getElementById('myProxyScreen').classList.remove('hidden');loadMyProxy()}
+        function showPingTest(){hideAll();document.getElementById('pingScreen').classList.remove('hidden');runPingTest()}
+        function showHelp(){hideAll();document.getElementById('helpScreen').classList.remove('hidden')}
+        function hideAll(){document.querySelectorAll('.container>div').forEach(el=>el.classList.add('hidden'))}
+        
+        function renderPlans(type){const container=document.getElementById('plansContainer');container.innerHTML='';const typePlans=plans[type];for(let planId in typePlans){const plan=typePlans[planId];const card=document.createElement('div');card.className='plan-card';card.onclick=()=>showPayment(planId);card.innerHTML=`<div class="plan-header"><div class="plan-name">📅 ${plan.name}</div><div class="plan-price">${plan.price} ₽</div></div><div class="plan-details">Порт: ${plan.port} • Срок: ${plan.days} ${plan.days===1?'день':'дней'}</div><div class="plan-features"><span class="feature-tag">⚡ 1 Гбит/с</span><span class="feature-tag">🌍 Финляндия</span><span class="feature-tag">🔒 Безопасно</span></div>`;container.appendChild(card)}}
+        
+        function handleFileSelect(event){const file=event.target.files[0];if(!file)return;if(!file.type.startsWith('image/')){tg.showAlert('❌ Пожалуйста, выберите изображение');return}const reader=new FileReader();reader.onload=function(e){selectedPhoto=e.target.result;document.getElementById('previewImage').src=selectedPhoto;document.getElementById('previewContainer').classList.remove('hidden')};reader.readAsDataURL(file)}
+        
+        function sendReceiptWithPhoto(){if(!selectedPlan||!selectedPhoto){tg.showAlert('❌ Выберите тариф и прикрепите чек');return}const data={action:'buy_proxy',type:selectedPlan.type,plan:selectedPlan.id,photo:selectedPhoto,user_id:tg.initDataUnsafe?.user?.id,username:tg.initDataUnsafe?.user?.username};tg.sendData(JSON.stringify(data));tg.close()}
+        
+        function loadMyProxy(){const data={action:'get_my_proxy',user_id:tg.initDataUnsafe?.user?.id};tg.sendData(JSON.stringify(data))}
+        
+        function runPingTest(){const data={action:'ping_test',user_id:tg.initDataUnsafe?.user?.id};tg.sendData(JSON.stringify(data))}
+        
+        function copyToClipboard(text){if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>tg.showAlert('✅ Скопировано!'))}else{const textarea=document.createElement('textarea');textarea.value=text;document.body.appendChild(textarea);textarea.select();document.execCommand('copy');document.body.removeChild(textarea);tg.showAlert('✅ Скопировано!')}}
+        
+        document.addEventListener('DOMContentLoaded',()=>{showMain();if(tg.colorScheme==='dark'){document.body.style.background='#0a0a0a'}});
+        
+        tg.BackButton.onClick(()=>{const screens=['plansScreen','paymentScreen','myProxyScreen','pingScreen','helpScreen'];let currentScreen=null;screens.forEach(screen=>{if(!document.getElementById(screen).classList.contains('hidden'))currentScreen=screen});if(currentScreen)showMain();else tg.close()});
+        
+        const observer=new MutationObserver(()=>{const mainHidden=document.getElementById('mainScreen').classList.contains('hidden');if(mainHidden)tg.BackButton.show();else tg.BackButton.hide()});observer.observe(document.getElementById('mainScreen'),{attributes:true,attributeFilter:['class']});
+    </script>
+</body>
+</html>
